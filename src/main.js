@@ -6,6 +6,7 @@ import store from './store'
 import dateFilter from '@/filters/date.filter'
 import messagePlugin from '@/utils/message.plugin.js'
 import './registerServiceWorker'
+import 'materialize-css/dist/js/materialize.min'
 
 import firebase from 'firebase/app'
 import 'firebase/auth'
@@ -26,12 +27,17 @@ const firebaseConfig = {
   appId: "1:105291034588:web:a65305de8c3b4655756919",
   measurementId: "G-WKVTXCT84H"
 }
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig)
-firebase.analytics()
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+firebase.initializeApp(firebaseConfig)
+
+let app
+
+firebase.auth().onAuthStateChanged(() => {
+  if (!app) {
+    app = new Vue({
+      router,
+      store,
+      render: h => h(App)
+    }).$mount('#app')
+  }
+})

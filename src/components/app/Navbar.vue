@@ -5,7 +5,7 @@
         <a href="#" @click.prevent="$emit('click')">
           <i class="material-icons black-text">dehaze</i>
         </a>
-        <span class="black-text">{{date | date('time')}}</span>
+        <span class="black-text">{{date | date('datetime')}}</span>
       </div>
 
       <ul class="right hide-on-small-and-down">
@@ -41,7 +41,6 @@
 
 
 <script>
-import M from 'materialize-css/dist/js/materialize.min'
 
 export default {
   data: () => ({
@@ -64,7 +63,8 @@ export default {
       this.dropdown.destroy()
   },
   methods: {
-    logout() {
+    async logout() {
+      await this.$store.dispatch('logout')
       this.$router.push('/login?message=logout')
     }
   }
