@@ -26,8 +26,9 @@ export default {
       const user = firebase.auth().currentUser
       return user ? user.uid : null
     },
-    async loguot() {
+    async loguot({commit}) {
       await firebase.auth().signOut()
+      commit('clearInfo')
     }
   }
 }
