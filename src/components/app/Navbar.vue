@@ -16,7 +16,7 @@
               data-target="dropdown"
               ref="dropdown"
           >
-            USER NAME
+            {{name}}
             <i class="material-icons right">arrow_drop_down</i>
           </a>
 
@@ -39,34 +39,37 @@
   </nav>
 </template>
 
-
 <script>
+  export default {
+    data: () => ({
+      date: new Date(),
+      interval: null,
+      dropdown: null
+    }),
+    mounted() {
+      this.interval = setInterval(() => {
+        this.date = new Date()
+      }, 1000)
 
-export default {
-  data: () => ({
-    date: new Date(),
-    interval: null,
-    dropdown: null
-  }),
-  mounted() {
-    this.interval = setInterval(() => {
-      this.date = new Date()
-    }, 1000)
-
-    this.dropdown = M.Dropdown.init(this.$refs.dropdown, {
-      constrainWidth: false
-    })
-  },
-  beforeDestroy() {
-    clearInterval(this.interval)
-    if (this.dropdown && this.dropdown.destroy)
-      this.dropdown.destroy()
-  },
-  methods: {
-    async logout() {
-      await this.$store.dispatch('logout')
-      this.$router.push('/login?message=logout')
+      this.dropdown = M.Dropdown.init(this.$refs.dropdown, {
+        constrainWidth: false
+      })
+    },
+    beforeDestroy() {
+      clearInterval(this.interval)
+      if (this.dropdown && this.dropdown.destroy)
+        this.dropdown.destroy()
+    },
+    computed: {
+      name() {
+        return this.$store.getters.info.name
+      }
+    },
+    methods: {
+      async logout() {
+        await this.$store.dispatch('logout')
+        this.$router.push('/login?message=logout')
+      }
     }
   }
-}
 </script>
